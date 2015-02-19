@@ -1,0 +1,17 @@
+{
+    "contents" : "data<-read.table(\"../pml-training.csv\", sep=\",\", header=T)\ntest.set<-read.table(\"../pml-testing.csv\", sep=\",\", header=T)\n\nsummary(data$X)\ntail(data$X)\nmax(data$X)\nsummary(data$user_name)\nhead(summary(data))\ngrep(\"classe\", names(data))\nsummary(data[,160])\nnames(data)\nnames(test.set)\n\n\ninstall.packages(\"caret\")\ninstall.packages(\"kernlab\")\ninstall.packages(\"e1071\")\nlibrary(caret)\nlibrary(kernlab)\n\nlibrary(e1071)\n\nset.seed(100)\nmodelFit<-train(data$classe ~ ., data=data, method=\"glm\")\nmodelFit\n\nsummary(data[,c(6:12)])\n\ndata(spam)\nset.seed(100)\ninTrain <- createDataPartition(y=spam$type,\n                               p=0.75, list=FALSE)\ntraining <- spam[inTrain,]\ntesting <- spam[-inTrain,]\nmodelFit.spam <- train(type ~.,data=training, method=\"glm\")\nmodelFit.spam\nmodelFit.spam$finalModel\npredictions.spam<- predict(modelFit.spam, newdata=testing)\npredictions.spam\nconfusionMatrix(predictions.spam, testing$type)\n\n\nstr(data)\nnumeric.data<-data\n\nfor (i in 1:length(names(data))) {\n    numeric.data[,i]<-as.numeric(as.character(data[,i]))\n}\n\nnumeric.data[,160]<-data[,160]\n    \n    modelFit<-train(data$classe ~ ., data=numeric.data, method=\"glm\")\nnas<-numeric()\nfor (i in 1:length(names(data))) {\n    nas[i]<-sum(is.na(numeric.data[,i]))    \n\n}\nfor (i in 1:length(names(data))) {\n    nas[i]<-sum(is.na(data[,i]))    \n    \n}\nsum(is.na(numeric.data[,2]))\nsapply(numeric.data[,2], function(x) sum(length(which(is.na(x)))))\npca<- preProcess(data[,-160], method=\"pca\", pcaComp=2)\n\n\n\n\n#====================Pre Process Data============================\n\n    processed.data<-data\n\n# Remove any column that is mostly NAs\n    remove.index<-numeric()\n\n    for (i in 1:length(names(data))){\n        if (sum(is.na(data[,i]))>=19000){\n            remove.index<-c(remove.index, i)\n        }\n    }\n\n    processed.data<-processed.data[,-remove.index]\n\n    summary(processed.data)\n    dim(processed.data)\n    sapply()",
+    "created" : 1424379442933.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "4280217180",
+    "id" : "5EA76504",
+    "lastKnownWriteTime" : 1424384787,
+    "path" : "~/Coursera Data Science Specialization/Machine Learning/CourseProject/Exploratory Analysis.R",
+    "project_path" : "Exploratory Analysis.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}
